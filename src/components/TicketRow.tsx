@@ -1,12 +1,13 @@
-import { TicketPriority, TicketStatus as TicketStatusType} from "@/types/ticket";
+import { TicketPriority as TicketPriorityType, TicketStatus as TicketStatusType} from "@/types/ticket";
 import TicketStatus from "@/components/TicketStatus";
+import TicketPriority from "@/components/TicketPriority";
 
 
 type TicketRowProps = {
   title: string;
   assignee: string;
   status: TicketStatusType;
-  priority: TicketPriority;
+  priority: TicketPriorityType;
 };
 
 export default function TicketRow({
@@ -30,7 +31,7 @@ export default function TicketRow({
       </div>
 
       <div className="w-28">
-        <span>{priority}</span>
+        <TicketPriority priority={priority} />
       </div>
     </div>
   );
