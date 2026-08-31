@@ -5,33 +5,34 @@ import TicketRow from "@/components/TicketRow";
 import { Ticket } from "@/types/ticket";
 import CreateTicketModal from "@/components/CreateTicketModal";
 
+const initialTickets: Ticket[] = [
+  {
+    id: "1",
+    title: "Unable to login",
+    assignee: "Daryl",
+    status: "In Progress",
+    priority: "High",
+  },
+  {
+    id: "2",
+    title: "Email verification not received",
+    assignee: "John",
+    status: "To Do",
+    priority: "Medium",
+  },
+  {
+    id: "3",
+    title: "Dashboard loading slowly",
+    assignee: "Sarah",
+    status: "Resolved",
+    priority: "Critical",
+  },
+];
+
 export default function Home() {
   const [search, setSearch] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const initialTickets: Ticket[] = [
-    {
-      id: "1",
-      title: "Unable to login",
-      assignee: "Daryl",
-      status: "In Progress",
-      priority: "High",
-    },
-    {
-      id: "2",
-      title: "Email verification not received",
-      assignee: "John",
-      status: "To Do",
-      priority: "Medium",
-    },
-    {
-      id: "3",
-      title: "Dashboard loading slowly",
-      assignee: "Sarah",
-      status: "Resolved",
-      priority: "Critical",
-    },
-  ];
   const [tickets, setTickets] = useState<Ticket[]>(initialTickets);
 
   const filteredTickets = tickets.filter((ticket) =>
@@ -116,7 +117,7 @@ export default function Home() {
           <CreateTicketModal
             isOpen={isCreateOpen}
             onClose={() => setIsCreateOpen(false)}
-             onCreate={handleCreate}
+            onCreate={handleCreate}
           />
         )}
       </div>
