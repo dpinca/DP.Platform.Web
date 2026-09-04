@@ -1,12 +1,13 @@
 "use client";
 
 import {
+  ticketPriorities
+} from "@/constants/ticket";
+import {
   CreateTicketInput,
-  createTicketSchema,
-  ticketPriorities,
-} from "@/types/ticket";
+  createTicketSchema
+} from "@/schemas/ticket";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type CreateTicketModalProps = {
