@@ -1,11 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import {
+  CreateTicketInput,
+  createTicketSchema,
+  ticketPriorities,
+} from "@/types/ticket";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type CreateTicketModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (ticket: { title: string; description: string }) => void;
+  onCreate: (ticket: CreateTicketInput) => void;
 };
 
 export default function CreateTicketModal({
@@ -13,21 +20,33 @@ export default function CreateTicketModal({
   onClose,
   onCreate,
 }: CreateTicketModalProps) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-
+ 
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm<CreateTicketInput>({
+  //   resolver: zodResolver(createTicketSchema),
+  //   defaultValues: {
+  //     title: "",
+  //     description: "",
+  //     priority: "Medium",
+  //   },
+  // });
+  const form = useForm<CreateTicketInput>({
+  resolver: zodResolver(createTicketSchema),
+  defaultValues: {
+    title: "",
+    description: "",
+    priority: "Medium",
+  },
+});
   if (!isOpen) {
     return null;
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    onCreate({
-      title,
-      description,
-    });
-
+  function onSubmit(data: CreateTicketInput) {
+    onCreate(data);
     onClose();
   }
   return (
@@ -45,7 +64,7 @@ export default function CreateTicketModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
               htmlFor="title"
@@ -57,11 +76,15 @@ export default function CreateTicketModal({
             <input
               id="title"
               type="text"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
+              {...form.register("title")}
               placeholder="Enter ticket title"
               className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none"
             />
+            {form.formState.errors.title && (
+              <p className="mt-1 text-sm text-red-600">
+                {form.formState.errors.title.message}
+              </p>
+            )}
           </div>
 
           <div className="mb-6">
@@ -74,12 +97,36 @@ export default function CreateTicketModal({
 
             <textarea
               id="description"
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
+              {...register("description")}
               placeholder="Describe the issue"
               rows={4}
               className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none"
             />
+            {errors.description && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+          <div className="mb-6">
+            <label
+              htmlFor="priority"
+              className="mb-1 block text-sm font-medium text-zinc-700"
+            >
+              Priority
+            </label>
+
+            <select
+              id="priority"
+              {...register("priority")}
+              className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm outline-none"
+            >
+              {ticketPriorities.map((priority) => (
+                <option key={priority} value={priority}>
+                  {priority}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="flex justify-end gap-2">

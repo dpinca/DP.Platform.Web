@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import TicketRow from "@/components/TicketRow";
-import { Ticket } from "@/types/ticket";
+import { CreateTicketInput, Ticket, TicketPriority } from "@/types/ticket";
 import CreateTicketModal from "@/components/CreateTicketModal";
 
 const initialTickets: Ticket[] = [
@@ -38,13 +38,13 @@ export default function Home() {
   const filteredTickets = tickets.filter((ticket) =>
     ticket.title.toLowerCase().includes(search.toLowerCase()),
   );
-  function handleCreate(ticket: { title: string; description: string }) {
+  function handleCreate(ticket: CreateTicketInput) {
     const newTicket: Ticket = {
       id: crypto.randomUUID(),
       title: ticket.title,
       assignee: "Daryl",
       status: "To Do",
-      priority: "Medium",
+      priority: ticket.priority,
     };
 
     setTickets((currentTickets) => [...currentTickets, newTicket]);
