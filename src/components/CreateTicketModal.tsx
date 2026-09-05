@@ -98,14 +98,14 @@ export default function CreateTicketModal({
 
             <textarea
               id="description"
-              {...register("description")}
+              {...form.register("description")}
               placeholder="Describe the issue"
               rows={4}
               className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none"
             />
-            {errors.description && (
+            {form.formState.errors.description && (
               <p className="mt-1 text-sm text-red-600">
-                {errors.description.message}
+                {form.formState.errors.description.message}
               </p>
             )}
           </div>
@@ -119,7 +119,7 @@ export default function CreateTicketModal({
 
             <select
               id="priority"
-              {...register("priority")}
+              {...form.register("priority")}
               className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm outline-none"
             >
               {ticketPriorities.map((priority) => (

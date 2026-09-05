@@ -1,6 +1,7 @@
-import { ticketPriorities } from "@/constants/ticket";
+import { ticketPriorities, ticketStatuses } from "@/constants/ticket";
 
-export type TicketStatus = "To Do" | "In Progress" | "Resolved" | "Closed";
+export type TicketPriority = (typeof ticketPriorities)[number];
+export type TicketStatus = (typeof ticketStatuses)[number];
 
 export type Ticket = {
   id: string;
@@ -11,5 +12,4 @@ export type Ticket = {
 };
 
 
-export type TicketPriority = (typeof ticketPriorities)[number];
 
