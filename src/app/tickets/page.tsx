@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import TicketRow from "@/components/TicketRow";
-import { CreateTicketInput, Ticket, TicketPriority } from "@/types/ticket";
+import { Ticket } from "@/types/ticket";
 import CreateTicketModal from "@/components/CreateTicketModal";
+import { CreateTicketInput } from "@/schemas/ticket";
 
 const initialTickets: Ticket[] = [
   {
