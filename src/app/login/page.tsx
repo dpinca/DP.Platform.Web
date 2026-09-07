@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginSchema, LoginInput } from "@/schemas/auth";
 import { api } from "@/lib/api";
+import { LoginResponse } from "@/types/auth";
 
 export default function LoginPage() {
   const {
@@ -24,6 +25,9 @@ export default function LoginPage() {
       const response = await api.post("/auth/login", data);
 
       console.log(response.data);
+      console.log(response.data.accessToken);
+      console.log(response.data.expiresAtUtc);
+      console.log(response.data.refreshToken);
     } catch (error) {
       console.error(error);
     }
