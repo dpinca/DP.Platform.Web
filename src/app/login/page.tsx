@@ -6,8 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginInput } from "@/schemas/auth";
 import { api } from "@/lib/api";
 import { LoginResponse } from "@/types/auth";
+import { useDispatch } from "react-redux";
+import { setAuth } from "@/store/authSlice";
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -22,12 +25,16 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginInput) {
     try {
-      const response = await api.post("/auth/login", data);
+      const response = await api.post<LoginResponse>("/auth/login", data);
 
-      console.log(response.data);
-      console.log(response.data.accessToken);
-      console.log(response.data.expiresAtUtc);
-      console.log(response.data.refreshToken);
+      dispatch(
+        setAuth({
+          accessToken: response.data.accessToken,
+          expiresAtUtc: response.data.expiresAtUtc,
+        }),
+      );
+
+      console.log("Login successful");
     } catch (error) {
       console.error(error);
     }
