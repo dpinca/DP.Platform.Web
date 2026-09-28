@@ -5,6 +5,7 @@ import { CreateTicketInput, createTicketSchema } from "@/schemas/ticket";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "@/lib/api";
+import axios from "axios";
 
 type CreateTicketModalProps = {
   isOpen: boolean;
@@ -35,12 +36,23 @@ export default function CreateTicketModal({
   }
 
   async function onSubmit(data: CreateTicketInput) {
-  const response = await api.post("/tickets", data);
+    try {
+      const response = await api.post("/tickets", data);
 
-  console.log(response.data);
+      console.log("SUCCESS:", response.data);
+      onClose();
+    } catch (error) {
+      console.log("CATCH HIT");
 
-  onClose();
-}
+      if (axios.isAxiosError(error)) {
+        console.log("Status:", error.response?.status);
+        console.log("Response:", error.response?.data);
+        console.log("Full error:", error);
+      } else {
+        console.error(error);
+      }
+    }
+  }
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40">
       <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">

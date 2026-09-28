@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { api } from "@/lib/api";
+import { clearAuth } from "@/store/authSlice";
+import { AppDispatch } from "@/store";
 
 type NavItem = {
   label: string;
@@ -25,13 +29,23 @@ const navItems: NavItem[] = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout");
+
+      dispatch(clearAuth());
+
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <aside className="w-64 border-r border-zinc-200 bg-white p-4">
       <div className="mb-8">
-        <h1 className="text-xl font-bold text-zinc-900">
-          DP Platform
-        </h1>
+        <h1 className="text-xl font-bold text-zinc-900">DP Platform</h1>
       </div>
 
       <nav>
@@ -52,6 +66,13 @@ export default function AppSidebar() {
           ))}
         </ul>
       </nav>
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="w-full rounded-lg px-3 py-2 text-left text-sm text-gray-600 hover:bg-gray-100"
+      >
+        Logout
+      </button>
     </aside>
   );
 }

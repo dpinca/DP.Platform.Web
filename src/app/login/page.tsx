@@ -8,6 +8,8 @@ import { api } from "@/lib/api";
 import { LoginResponse } from "@/types/auth";
 import { useDispatch } from "react-redux";
 import { setAuth } from "@/store/authSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ export default function LoginPage() {
       password: "",
     },
   });
-
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   async function onSubmit(data: LoginInput) {
     try {
       const response = await api.post<LoginResponse>("/auth/login", data);
@@ -39,7 +41,6 @@ export default function LoginPage() {
       console.error(error);
     }
   }
-
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
       <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
@@ -72,6 +73,11 @@ export default function LoginPage() {
 
           <button type="submit">Sign in</button>
         </form>
+        {accessToken && (
+          <p className="mt-4 text-sm text-green-600">
+            Authenticated! Token is now in Redux.
+          </p>
+        )}
       </div>
     </main>
   );
