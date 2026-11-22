@@ -2,10 +2,9 @@
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { api } from "@/lib/api";
+import { refreshAccessToken  } from "@/lib/api";
 import { setAuth, setInitialized } from "@/store/authSlice";
 import { AppDispatch } from "@/store";
-import { LoginResponse } from "@/types/auth";
 
 export default function AuthInitializer() {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,14 +13,12 @@ export default function AuthInitializer() {
     async function restoreSession() {
       try {
 
-        const response = await api.post<LoginResponse>(
-          "/auth/refresh"
-        );
+        const response = await refreshAccessToken();
 
         dispatch(
           setAuth({
-            accessToken: response.data.accessToken,
-            expiresAtUtc: response.data.expiresAtUtc,
+            accessToken: response.accessToken,
+            expiresAtUtc: response.expiresAtUtc,
           })
         );
       } catch {

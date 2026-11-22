@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
   accessToken: string | null;
@@ -37,6 +38,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setAuth, clearAuth, setInitialized } = authSlice.actions;
+export const { setAuth, clearAuth, setInitialized } = authSlice.actions; // Actions tell Redux what change we want.
 
-export default authSlice.reducer;
+export default authSlice.reducer; // Reducers define how that change happens.

@@ -2,17 +2,18 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { loginSchema, LoginInput } from "@/schemas/auth";
-import { api } from "@/lib/api";
-import { LoginResponse } from "@/types/auth";
 import { useDispatch } from "react-redux";
+
+import { loginSchema } from "@/schemas/auth";
+import { api } from "@/lib/api";
 import { setAuth } from "@/store/authSlice";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+
+import type { LoginInput } from "@/schemas/auth";
+import type { LoginResponse } from "@/types/auth";
+import type { AppDispatch } from "@/store";
 
 export default function LoginPage() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
@@ -24,7 +25,6 @@ export default function LoginPage() {
       password: "",
     },
   });
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   async function onSubmit(data: LoginInput) {
     try {
       const response = await api.post<LoginResponse>("/auth/login", data);
@@ -55,29 +55,56 @@ export default function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <div>
-            <label htmlFor="email">Email</label>
+          <div className="space-y-2">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-slate-700"
+            >
+              Email
+            </label>
 
-            <input id="email" type="email" {...register("email")} />
+            <input
+              id="email"
+              type="email"
+              {...register("email")}
+              className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              placeholder="you@example.com"
+            />
 
-            {errors.email && <p>{errors.email.message}</p>}
+            {errors.email && (
+              <p className="text-sm text-red-600">{errors.email.message}</p>
+            )}
           </div>
 
-          <div>
-            <label htmlFor="password">Password</label>
+          <div className="space-y-2">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-slate-700"
+            >
+              Password
+            </label>
 
-            <input id="password" type="password" {...register("password")} />
+            <input
+              id="password"
+              type="password"
+              {...register("password")}
+              className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              placeholder="Enter your password"
+            />
 
-            {errors.password && <p>{errors.password.message}</p>}
+            {errors.password && (
+              <p className="text-sm text-red-600">{errors.password.message}</p>
+            )}
           </div>
 
-          <button type="submit">Sign in</button>
+          <button
+            type="submit"
+            className="h-11 w-full rounded-lg bg-blue-600 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          >
+            Sign in
+          </button>
         </form>
-        {accessToken && (
-          <p className="mt-4 text-sm text-green-600">
-            Authenticated! Token is now in Redux.
-          </p>
-        )}
+
       </div>
     </main>
   );

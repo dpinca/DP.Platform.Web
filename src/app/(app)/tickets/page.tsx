@@ -1,10 +1,18 @@
 "use client";
 
+import { useDispatch } from "react-redux";
+import { setAuth } from "@/store/authSlice";
+import type { AppDispatch } from "@/store";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store";
+
 import { useState } from "react";
 import TicketRow from "@/components/TicketRow";
 import { Ticket } from "@/types/ticket";
 import CreateTicketModal from "@/components/CreateTicketModal";
 import { CreateTicketInput } from "@/schemas/ticket";
+
+
 
 const initialTickets: Ticket[] = [
   {
@@ -31,6 +39,7 @@ const initialTickets: Ticket[] = [
 ];
 
 export default function Home() {
+
   const [search, setSearch] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
@@ -122,6 +131,8 @@ export default function Home() {
           />
         )}
       </div>
+
+    
     </main>
   );
 }
