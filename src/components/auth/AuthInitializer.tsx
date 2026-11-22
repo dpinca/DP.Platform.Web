@@ -9,18 +9,10 @@ import { AppDispatch } from "@/store";
 export default function AuthInitializer() {
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
+    useEffect(() => {
     async function restoreSession() {
       try {
-
-        const response = await refreshAccessToken();
-
-        dispatch(
-          setAuth({
-            accessToken: response.accessToken,
-            expiresAtUtc: response.expiresAtUtc,
-          })
-        );
+        await refreshAccessToken();
       } catch {
         dispatch(setInitialized());
       }
