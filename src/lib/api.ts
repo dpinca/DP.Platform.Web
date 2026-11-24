@@ -71,10 +71,17 @@ api.interceptors.response.use(
 
     const originalRequest = error.config;
 
+    const isAuthEndpoint = [
+      "/auth/login",
+      "/auth/refresh",
+      "/auth/logout",
+    ].some((endpoint) => originalRequest?.url?.includes(endpoint));
+
     if (
       error.response?.status === 401 &&
       originalRequest &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      !isAuthEndpoint
     ) {
       originalRequest._retry = true;
 
